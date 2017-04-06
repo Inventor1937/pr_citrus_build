@@ -22,4 +22,6 @@ PRODUCT_PACKAGES := \
     Dialer \
     CellBroadcastReceiver \
     EmergencyInfo \
-    rild
+    rild \
+    librilutils \
+    sap-api-java-static
