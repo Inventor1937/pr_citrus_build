@@ -15,13 +15,23 @@
 # limitations under the License.
 #
 
-from __future__ import print_function
-
 import json, hashlib, operator, os, sys
 
 def get_file_size(path):
   st = os.lstat(path)
   return st.st_size
+
+def get_file_digest(path):
+  if os.path.isfile(path) == False:
+    return "----------------------------------------------------------------"
+  digest = hashlib.sha256()
+  with open(path, 'rb') as f:
+    while True:
+      buf = f.read(1024*1024)
+      if not buf:
+        break
+      digest.update(buf)
+  return digest.hexdigest();
 
 def get_file_digest(path):
   if os.path.isfile(path) == False:
@@ -53,9 +63,8 @@ def main(argv):
           output.append(row)
         except os.error:
           pass
-
   output.sort(key=operator.itemgetter("Size", "Name"), reverse=True)
-  print(json.dumps(output, indent=2, separators=(',',': ')))
+  print json.dumps(output, indent=2, separators=(',',': '))
 
 if __name__ == '__main__':
   main(sys.argv)
