@@ -154,8 +154,8 @@ def BuildVerityFEC(sparse_image_path, verity_path, verity_fec_path,
                    padding_size):
   cmd = "fec -e -p %d %s %s %s" % (padding_size, sparse_image_path,
                                    verity_path, verity_fec_path)
-  print cmd
-  status, output = commands.getstatusoutput(cmd)
+  print(cmd)
+  status, output = getstatusoutput(cmd)
   if status:
     print("Could not build FEC data! Error: %s" % output)
     return False
@@ -176,6 +176,14 @@ def BuildVerityTree(sparse_image_path, verity_image_path, prop_dict):
 
 def BuildVerityMetadata(image_size, verity_metadata_path, root_hash, salt,
                         block_device, signer_path, key, signer_args):
+  verity_key = os.getenv("PRODUCT_VERITY_KEY", None)
+  verity_key_password = None
+
+  if verity_key and os.path.exists(verity_key+".pk8"):
+    verity_key_passwords = {}
+    verity_key_passwords.update(common.PasswordManager().GetPasswords(verity_key.split()))
+    verity_key_password = verity_key_passwords[verity_key]
+
   cmd_template = (
       "system/extras/verity/build_verity_metadata.py build " +
       "%s %s %s %s %s %s %s")
@@ -183,8 +191,10 @@ def BuildVerityMetadata(image_size, verity_metadata_path, root_hash, salt,
                         block_device, signer_path, key)
   if signer_args:
     cmd += " --signer_args=\"%s\"" % (' '.join(signer_args),)
-  print cmd
-  status, output = commands.getstatusoutput(cmd)
+
+  print(cmd)
+
+  status, output = getstatusoutput(cmd)
   if status:
     print("Could not build verity metadata!")
 

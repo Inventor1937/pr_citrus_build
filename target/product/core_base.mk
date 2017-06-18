@@ -24,7 +24,6 @@ PRODUCT_PACKAGES += \
     ContactsProvider \
     DefaultContainerService \
     TelephonyProvider \
-    UserDictionaryProvider \
     atrace \
     libandroidfw \
     libaudiopreprocessing \
