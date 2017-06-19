@@ -2023,7 +2023,7 @@ endif # BOARD_USES_RECOVERY_AS_BOOT
 	@# Prebuilt boot images
 	$(hide) mkdir -p $(zip_root)/BOOTABLE_IMAGES
 	$(hide) $(ACP) $(INSTALLED_BOOTIMAGE_TARGET) $(zip_root)/BOOTABLE_IMAGES/
-ifneq ($(TARGET_NO_RECOVERY),true)
+ifeq ($(BOARD_USES_FULL_RECOVERY_IMAGE),true)
 	$(hide) $(ACP) $(INSTALLED_RECOVERYIMAGE_TARGET) $(zip_root)/BOOTABLE_IMAGES/
 endif
 ifdef BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE
